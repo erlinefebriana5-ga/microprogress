@@ -125,16 +125,19 @@ st.subheader("📖 Stories")
 st.markdown("<h1 style='font-family: Georgia;'>🌱 MicroProgress</h1>", unsafe_allow_html=True)
 
 try:
-    data = list(csv.reader(f))
+    with open("microprogress.csv", "r", encoding="utf-8") as f:
+        data = list(csv.reader(f))
+
     data.reverse()
 
     for i, row in enumerate(data):
 
-    if len(row) == 4:
-        tanggal, judul, isi, img = row
-    else:
-        tanggal, judul, isi = row
-        img = ""
+        # FIX: handle data lama (3 kolom) & baru (4 kolom)
+        if len(row) == 4:
+            tanggal, judul, isi, img = row
+        else:
+            tanggal, judul, isi = row
+            img = ""
 
         # FORMAT DATE
         tgl = datetime.fromisoformat(tanggal)
@@ -163,6 +166,9 @@ try:
                     writer.writerows(reversed(data))
 
                 st.rerun()
+
+except Exception as e:
+    st.write("Error:", e)
 
 except:
     st.write("Belum ada cerita hari ini 👀")

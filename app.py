@@ -130,11 +130,11 @@ try:
 
     for i, row in enumerate(data):
 
-        if len(row) == 4:
-    tanggal, judul, isi, img = row
-else:
-    tanggal, judul, isi = row
-    img = ""
+    if len(row) == 4:
+        tanggal, judul, isi, img = row
+    else:
+        tanggal, judul, isi = row
+        img = ""
 
         # FORMAT DATE
         tgl = datetime.fromisoformat(tanggal)

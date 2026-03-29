@@ -151,9 +151,10 @@ try:
             st.image(base64.b64decode(img))
 
        # DELETE BUTTON (HANYA ADMIN)
-       if admin_mode:
-       if st.button("🗑 Hapus", key=f"delete_{i}"):
-          data.pop(i)
+      # DELETE BUTTON (HANYA ADMIN)
+if admin_mode:
+    if st.button("🗑 Hapus", key=f"delete_{i}"):
+        data.pop(i)
 
         with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)

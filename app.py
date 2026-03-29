@@ -1,4 +1,8 @@
 import streamlit as st
+
+# SECRET KEY
+admin_mode = st.query_params.get("admin") == "true"
+import streamlit as st
 import csv
 from datetime import datetime
 import base64
@@ -83,8 +87,9 @@ st.caption("Small steps. Every day.")
 st.divider()
 
 # ===== ADMIN INPUT =====
-if is_admin:
+if admin_mode:
     with st.expander("✍️ Tulis Post"):
+
         judul = st.text_input("Judul")
         isi = st.text_area("Cerita hari ini")
         foto = st.file_uploader("Upload foto 📸", type=["png","jpg","jpeg"])
@@ -93,7 +98,11 @@ if is_admin:
             if judul and isi:
                 img_data = ""
                 if foto:
+                    import base64
                     img_data = base64.b64encode(foto.read()).decode()
+
+                import csv
+                from datetime import datetime
 
                 with open("microprogress.csv", "a", newline="", encoding="utf-8") as f:
                     writer = csv.writer(f)
@@ -102,9 +111,6 @@ if is_admin:
                 st.success("Posted 🔥")
             else:
                 st.warning("Isi dulu ya!")
-else:
-    st.info("🔒 Mode baca saja")
-
 st.divider()
 st.markdown("<hr style='border:1px solid #e0ddd7;'>", unsafe_allow_html=True)
 

@@ -1,3 +1,6 @@
+import streamlit as st
+
+# CSS fix (harus lengkap buka & tutup)
 st.markdown("""
 <style>
 hr {
@@ -5,7 +8,6 @@ hr {
 }
 </style>
 """, unsafe_allow_html=True)
-import streamlit as st
 
 # SECRET KEY
 admin_mode = st.query_params.get("admin") == "true"

@@ -1,21 +1,8 @@
 import streamlit as st
-
-# CSS fix (harus lengkap buka & tutup)
-st.markdown("""
-<style>
-hr {
-    display: none;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# SECRET KEY
-is_admin = st.query_params.get("admin") == "true"
-is_admin = admin_mode and (password == "Suryasaputra5")
-import streamlit as st
 import csv
 from datetime import datetime
 import base64
+
 # 🔐 ADMIN SYSTEM
 admin_mode = st.query_params.get("admin") == "true"
 

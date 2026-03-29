@@ -3,6 +3,9 @@ import csv
 from datetime import datetime
 import base64
 
+password = st.text_input("Masukkan password admin", type="password")
+
+is_admin = password == "1234"  # ganti password kamu
 # ===== CONFIG =====
 st.set_page_config(page_title="MicroProgress 🌱", layout="centered")
 
@@ -80,27 +83,27 @@ st.caption("Small steps. Every day.")
 st.divider()
 
 # ===== ADMIN INPUT =====
-with st.expander("✍️ Tulis Post "):
+if is_admin:
+    with st.expander("✍️ Tulis Post"):
+        judul = st.text_input("Judul")
+        isi = st.text_area("Cerita hari ini")
+        foto = st.file_uploader("Upload foto 📸", type=["png","jpg","jpeg"])
 
-    judul = st.text_input("Judul")
-    isi = st.text_area("Cerita hari ini")
-    foto = st.file_uploader("Upload foto 📸", type=["png", "jpg", "jpeg"])
+        if st.button("Post 🚀"):
+            if judul and isi:
+                img_data = ""
+                if foto:
+                    img_data = base64.b64encode(foto.read()).decode()
 
-    if st.button("Post 🚀"):
-        if judul and isi:
+                with open("microprogress.csv", "a", newline="", encoding="utf-8") as f:
+                    writer = csv.writer(f)
+                    writer.writerow([datetime.now(), judul, isi, img_data])
 
-            img_data = ""
-            if foto:
-                img_data = base64.b64encode(foto.read()).decode()
-
-            with open("microprogress.csv", "a", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow([datetime.now(), judul, isi, img_data])
-
-            st.success("Posted 🔥")
-
-        else:
-            st.warning("Isi dulu ya!")
+                st.success("Posted 🔥")
+            else:
+                st.warning("Isi dulu ya!")
+else:
+    st.info("🔒 Mode baca saja")
 
 st.divider()
 st.markdown("<hr style='border:1px solid #e0ddd7;'>", unsafe_allow_html=True)

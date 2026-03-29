@@ -3,7 +3,7 @@ import csv
 from datetime import datetime
 import base64
 
-# 🔐 ADMIN SYSTEM
+# ===== ADMIN SYSTEM =====
 admin_mode = st.query_params.get("admin") == "true"
 
 if admin_mode:
@@ -12,6 +12,7 @@ else:
     password = ""
 
 is_admin = admin_mode and (password == "Suryasaputra5")
+
 # ===== CONFIG =====
 st.set_page_config(page_title="MicroProgress 🌱", layout="centered")
 
@@ -86,10 +87,11 @@ h1 {
 st.title("🌱 MicroProgress")
 st.caption("Small steps. Every day.")
 
+# ✨ cuma 1 garis (fix)
 st.markdown("<hr style='border:1px solid #e5e2dc;'>", unsafe_allow_html=True)
 
 # ===== ADMIN INPUT =====
-if admin_mode:
+if is_admin:
     with st.expander("✍️ Tulis Post"):
 
         judul = st.text_input("Judul")
@@ -98,8 +100,6 @@ if admin_mode:
 
         if st.button("Post 🚀"):
             if judul and isi:
-                import base64, csv
-                from datetime import datetime
 
                 img_data = ""
                 if foto:
@@ -112,8 +112,6 @@ if admin_mode:
                 st.success("Posted 🔥")
             else:
                 st.warning("Isi dulu ya!")
-st.divider()
-st.markdown("<hr style='border:1px solid #e0ddd7;'>", unsafe_allow_html=True)
 
 # ===== DISPLAY =====
 st.subheader("📖 Stories")
@@ -127,7 +125,7 @@ try:
 
     for i, row in enumerate(data):
 
-        # FIX: handle data lama (3 kolom) & baru (4 kolom)
+        # handle data lama & baru
         if len(row) == 4:
             tanggal, judul, isi, img = row
         else:
@@ -138,7 +136,7 @@ try:
         tgl = datetime.fromisoformat(tanggal)
         tanggal_format = tgl.strftime('%d %B %Y • %H:%M')
 
-        # CARD UI
+        # CARD
         st.markdown(f"""
         <div class="card">
             <div class="title">{judul}</div>
@@ -151,8 +149,9 @@ try:
         if img:
             st.image(base64.b64decode(img))
 
-        # DELETE BUTTON (ADMIN ONLY)
-        if admin_mode:
+        # ❌ reader tidak bisa hapus
+        # ✅ hanya admin
+        if is_admin:
             if st.button("🗑 Hapus", key=f"delete_{i}"):
                 data.pop(i)
 
@@ -161,9 +160,6 @@ try:
                     writer.writerows(reversed(data))
 
                 st.rerun()
-
-except Exception as e:
-    st.write("Error:", e)
 
 except:
     st.write("Belum ada cerita hari ini 👀")

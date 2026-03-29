@@ -10,13 +10,21 @@ hr {
 """, unsafe_allow_html=True)
 
 # SECRET KEY
-admin_mode = st.query_params.get("admin") == "true"
+is_admin = st.query_params.get("admin") == "true"
+is_admin = admin_mode and (password == "Suryasaputra5")
 import streamlit as st
 import csv
 from datetime import datetime
 import base64
-
 admin_mode = st.query_params.get("admin") == "true"
+
+if admin_mode:
+    password = st.text_input("🔐 Admin Login", type="password")
+else:
+    password = ""
+
+is_admin = admin_mode and (password == "Suryasaputra5)
+
 # ===== CONFIG =====
 st.set_page_config(page_title="MicroProgress 🌱", layout="centered")
 

@@ -1,3 +1,10 @@
+st.markdown("""
+<style>
+hr {
+    display: none;
+}
+</style>
+""", unsafe_allow_html=True)
 import streamlit as st
 
 # SECRET KEY
@@ -82,7 +89,7 @@ h1 {
 st.title("🌱 MicroProgress")
 st.caption("Small steps. Every day.")
 
-st.divider()
+st.markdown("<hr style='border:1px solid #e5e2dc;'>", unsafe_allow_html=True)
 
 # ===== ADMIN INPUT =====
 if admin_mode:

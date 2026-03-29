@@ -7,9 +7,7 @@ import csv
 from datetime import datetime
 import base64
 
-password = st.text_input("Masukkan password admin", type="password")
-
-is_admin = password == "1234"  # ganti password kamu
+admin_mode = st.query_params.get("admin") == "true"
 # ===== CONFIG =====
 st.set_page_config(page_title="MicroProgress 🌱", layout="centered")
 
@@ -96,13 +94,12 @@ if admin_mode:
 
         if st.button("Post 🚀"):
             if judul and isi:
+                import base64, csv
+                from datetime import datetime
+
                 img_data = ""
                 if foto:
-                    import base64
                     img_data = base64.b64encode(foto.read()).decode()
-
-                import csv
-                from datetime import datetime
 
                 with open("microprogress.csv", "a", newline="", encoding="utf-8") as f:
                     writer = csv.writer(f)

@@ -23,8 +23,7 @@ if admin_mode:
 else:
     password = ""
 
-is_admin = admin_mode and (password == "Suryasaputra5)
-
+is_admin = admin_mode and (password == "Suryasaputra5")
 # ===== CONFIG =====
 st.set_page_config(page_title="MicroProgress 🌱", layout="centered")
 

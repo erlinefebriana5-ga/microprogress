@@ -16,6 +16,7 @@ import streamlit as st
 import csv
 from datetime import datetime
 import base64
+# 🔐 ADMIN SYSTEM
 admin_mode = st.query_params.get("admin") == "true"
 
 if admin_mode:

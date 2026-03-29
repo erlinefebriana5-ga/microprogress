@@ -125,9 +125,8 @@ st.subheader("📖 Stories")
 st.markdown("<h1 style='font-family: Georgia;'>🌱 MicroProgress</h1>", unsafe_allow_html=True)
 
 try:
-    with open("microprogress.csv", "r", encoding="utf-8") as f:
-        data = list(csv.reader(f))
-        data.reverse()
+    data = list(csv.reader(f))
+    data.reverse()
 
     for i, row in enumerate(data):
 
@@ -135,7 +134,7 @@ try:
 
         # FORMAT DATE
         tgl = datetime.fromisoformat(tanggal)
-        tanggal_format = tgl.strftime("%d %B %Y • %H:%M")
+        tanggal_format = tgl.strftime('%d %B %Y • %H:%M')
 
         # CARD UI
         st.markdown(f"""
@@ -150,17 +149,16 @@ try:
         if img:
             st.image(base64.b64decode(img))
 
-       # DELETE BUTTON (HANYA ADMIN)
-      # DELETE BUTTON (HANYA ADMIN)
-if admin_mode:
-    if st.button("🗑 Hapus", key=f"delete_{i}"):
-        data.pop(i)
+        # DELETE BUTTON (ADMIN ONLY)
+        if admin_mode:
+            if st.button("🗑 Hapus", key=f"delete_{i}"):
+                data.pop(i)
 
-        with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerows(reversed(data))
+                with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
+                    writer = csv.writer(f)
+                    writer.writerows(reversed(data))
 
-        st.rerun()
+                st.rerun()
 
 except:
     st.write("Belum ada cerita hari ini 👀")

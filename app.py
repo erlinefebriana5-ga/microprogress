@@ -150,15 +150,16 @@ try:
         if img:
             st.image(base64.b64decode(img))
 
-        # DELETE BUTTON
-        if st.button("🗑 Hapus", key=f"delete_{i}"):
-            data.pop(i)
+       # DELETE BUTTON (HANYA ADMIN)
+       if admin_mode:
+       if st.button("🗑 Hapus", key=f"delete_{i}"):
+          data.pop(i)
 
-            with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerows(reversed(data))
+        with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerows(reversed(data))
 
-            st.rerun()
+        st.rerun()
 
 except:
     st.write("Belum ada cerita hari ini 👀")

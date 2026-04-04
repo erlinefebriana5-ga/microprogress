@@ -1,6 +1,52 @@
+import streamlit as st
+import csv
+from datetime import datetime
+import base64
+
+# ===== ADMIN SYSTEM =====
+admin_mode = st.query_params.get("admin") == "true"
+
+if admin_mode:
+    password = st.text_input("🔐 Admin Login", type="password")
+else:
+    password = ""
+
+is_admin = admin_mode and (password == "Suryasaputra5")
+
+# ===== CONFIG =====
+st.set_page_config(page_title="MicroProgress 🌱", layout="centered")
+
+# ===== HEADER =====
+st.title("🌱 MicroProgress")
+st.caption("Small steps. Every day.")
+
+st.markdown("<hr style='border:1px solid #e5e2dc;'>", unsafe_allow_html=True)
+
+# ===== ADMIN INPUT =====
+if is_admin:
+    with st.expander("✍️ Tulis Post"):
+
+        judul = st.text_input("Judul")
+        isi = st.text_area("Cerita hari ini")
+        foto = st.file_uploader("Upload foto 📸", type=["png","jpg","jpeg"])
+
+        if st.button("Post 🚀"):
+            if judul and isi:
+
+                img_data = ""
+                if foto:
+                    img_data = base64.b64encode(foto.read()).decode()
+
+                with open("microprogress.csv", "a", newline="", encoding="utf-8") as f:
+                    writer = csv.writer(f)
+                    writer.writerow([str(datetime.now()), judul, isi, img_data])
+
+                st.success("Posted 🔥")
+            else:
+                st.warning("Isi dulu ya!")
+
 # ===== DISPLAY =====
 st.subheader("📖 Stories")
-st.markdown("<h1 style='font-family: Georgia;'>🌱 MicroProgress</h1>", unsafe_allow_html=True)
 
 try:
     with open("microprogress.csv", "r", encoding="utf-8") as f:
@@ -16,24 +62,19 @@ try:
             tanggal, judul, isi = row
             img = ""
 
-        # FORMAT DATE
         tgl = datetime.fromisoformat(tanggal)
         tanggal_format = tgl.strftime('%d %B %Y • %H:%M')
 
-        # CARD
         st.markdown(f"""
-        <div class="card">
-            <div class="title">{judul}</div>
-            <div class="date">{tanggal_format}</div>
-            <div class="content">{isi}</div>
-        </div>
-        """, unsafe_allow_html=True)
+        ### {judul}
+        *{tanggal_format}*
 
-        # IMAGE
+        {isi}
+        """)
+
         if img:
             st.image(base64.b64decode(img))
 
-        # DELETE (FIXED)
         if is_admin:
             if st.button("🗑 Hapus", key=f"delete_{i}"):
 

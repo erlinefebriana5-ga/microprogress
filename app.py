@@ -37,17 +37,22 @@ try:
 
         # DELETE (AMAN)
         if is_admin:
-            if st.button("🗑 Hapus", key=f"delete_{i}"):
+    if st.button("🗑 Hapus", key=f"delete_{i}"):
 
-                # hapus dari data asli (bukan yang dibalik)
-                original_index = len(original_data) - 1 - i
-                original_data.pop(original_index)
+        with open("microprogress.csv", "r", encoding="utf-8") as f:
+            original_data = list(csv.reader(f))
 
-                with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
-                    writer = csv.writer(f)
-                    writer.writerows(original_data)
+        original_index = len(original_data) - 1 - i
 
-                st.rerun()
+        if 0 <= original_index < len(original_data):
+            original_data.pop(original_index)
+
+            with open("microprogress.csv", "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerows(original_data)
+
+        st.rerun()
+        writer.writerow([str(datetime.now()), judul, isi, img_data])
 
 except:
     st.write("Belum ada cerita hari ini 👀")
